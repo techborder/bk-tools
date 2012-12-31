@@ -22,21 +22,209 @@
 #
 # ------------------------------------------------------------
 
-: ${GETSLOW_CONF:="$HOME/.my.cnf"}
-: ${GETSLOW_COLLECT_SECONDS:="5"}
-VERBOSE=0
+: ${GETSLOW_CONFIG_FILE:="$HOME/.my.cnf"}
+: ${GETSLOW_SECONDS:="5"}
+: ${GETSLOW_LOG_FILE:=""}
+: ${GETSLOW_LONG_QUERY_TIME:="0"}
+: ${GETSLOW_VERBOSE:="0"}
 
-while getopts "c:s:v" opt ; do
-  case $opt in
-  c) GETSLOW_CONF=$OPTARG ;;
-  s) GETSLOW_COLLECT_SECONDS=$OPTARG ;;
-  v) VERBOSE=1 ;;
-  esac
-done
-shift $(($OPTIND - 1))
+parse_options() {
+  options=$(getopt -n "$0" -o c:f:l:s:v -l "config: file: long-query-time: sleep-time: verbose" -- "$@")
+  if [ $? -ne 0 ] ; then
+    echo "$0: unrecognized options." 2>&1
+    exit 1
+  fi
+  eval set -- "$options"
+  while [ $# -gt 0 ]
+  do
+    case $1 in
+    -c|--config) GETSLOW_CONFIG_FILE="$2" ; shift ;;
+    -f|--file) GETSLOW_LOG_FILE="$2" ; shift ;;
+    -l|--long-query-time) GETSLOW_LONG_QUERY_TIME="$2" ; shift ;;
+    -s|--sleep-time) GETSLOW_SECONDS="$2" ;;
+    -v|--verbose) GETSLOW_VERBOSE=1 ;;
+    (--) shift ; break ;;
+    (-*) echo "$0: error - unrecognized option $1" 1>&2 ; exit 1 ;;
+    (*) break ;;
+    esac
+    shift
+  done
 
-mysql="mysql --defaults-extra-file=$GETSLOW_CONF"
-mysqladmin="mysqladmin --defaults-extra-file=$GETSLOW_CONF"
+  mysql="mysql --defaults-file=$GETSLOW_CONFIG_FILE"
+  mysqladmin="mysqladmin --defaults-file=$GETSLOW_CONFIG_FILE"
+}
+
+# ------------------------------------------------------------
+
+version_check() {
+  version_full=`$mysql -B -N -e "SELECT @@version"`
+  if [ $? -ne 0 ] ; then
+    echo "Cannot connect to MySQL Server"
+    exit 1
+  fi
+
+  version=`echo "$version_full" | sed -rne 's/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'`
+  version_major=`echo "$version" | sed -rne 's/^([0-9]+)\.[0-9]+\.[0-9]+/\1/p'`
+  version_minor=`echo "$version" | sed -rne 's/^[0-9]+\.([0-9]+)\.[0-9]+/\1/p'`
+  version_point=`echo "$version" | sed -rne 's/^[0-9]+\.[0-9]+\.([0-9]+)/\1/p'`
+
+  [ $GETSLOW_VERBOSE -ne 0 ] && echo "Detected version=$version"
+
+  if [ $version_major -lt 5 -o \( $version_major -eq 5 -a $version_minor -eq 0 \) ] ; then
+    echo "This tool does not support MySQL version 5.0 or older. " 1>&2
+    exit 1
+  fi
+
+  version_comment=`$mysql -B -N -e "SELECT @@version_comment"`
+  PERCONA=`echo "$version_comment" | grep -ci "percona"`
+  MARIADB=`echo "$version_comment" | grep -ci "mariadb"`
+
+  if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
+    if [ $version_major -eq 5 -a $version_minor -eq 5 ] ; then
+      : ${GETSLOW_VERBOSITY:="microtime,query_plan,innodb,profiling"}
+    fi
+    : ${GETSLOW_VERBOSITY:="microtime,query_plan,innodb"}
+    : ${GETSLOW_LOG_FILTER:=""}
+    : ${GETSLOW_RATE_LIMIT:=""}
+  fi
+
+  if [ $PERCONA -ne 0 ] ; then
+    [ $GETSLOW_VERBOSE -ne 0 ] && echo "Detected Percona Server"
+
+    : ${GETSLOW_SP_STATEMENTS:=""}
+    : ${GETSLOW_RATE_TYPE:=""}
+    : ${GETSLOW_TIMESTAMP_ALWAYS:=""}
+    : ${GETSLOW_TIMESTAMP_PRECISION:=""}
+
+    if [ $version_major -eq 5 -a $version_minor -eq 5 -a $version_point -lt 10 ] ; then
+      opt_slow_query_log_timestamp_precision="slow_query_log_microseconds_timestamp"
+      opt_slow_query_log_timestamp_always="log_slow_timestamp_every"
+    else
+      opt_slow_query_log_timestamp_precision="slow_query_log_timestamp_precision"
+      opt_slow_query_log_timestamp_always="slow_query_log_timestamp_always"
+    fi
+
+    if [ $version_major -eq 5 -a $version_minor -lt 5 ] ; then
+      opt_log_slow_rate_type=""
+    else
+      opt_log_slow_rate_type="log_slow_rate_type"
+    fi
+  fi
+
+  if [ $MARIADB -ne 0 ] ; then
+    [ $GETSLOW_VERBOSE -ne 0 ] && echo "Detected MariaDB"
+  fi
+}
+
+# ------------------------------------------------------------
+
+discover_all() {
+  discover_one "slow_query_log"
+  discover_one "slow_query_log_file"
+  discover_one "long_query_time"
+
+  if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
+    discover_one "log_slow_verbosity"
+    [ -z "$GETSLOW_LOG_FILTER" ] || discover_one "log_slow_filter"
+    [ -z "$GETSLOW_RATE_LIMIT" ] || discover_one "log_slow_rate_limit"
+  fi
+
+  if [ $PERCONA -ne 0 ] ; then
+    [ -z "$GETSLOW_SP_STATEMENTS" ] || discover_one "log_slow_sp_statements"
+    [ -z "$GETSLOW_RATE_TYPE" -o -z "$opt_log_slow_rate_type" ] || discover_one "$opt_log_slow_rate_type"
+    [ -z "$GETSLOW_TIMESTAMP_ALWAYS" ] || discover_one "$opt_slow_query_log_timestamp_always"
+    [ -z "$GETSLOW_TIMESTAMP_PRECISION" ] || discover_one "$opt_slow_query_log_timestamp_precision"
+  fi
+
+  if [ $MARIADB -ne 0 ] ; then
+    : ${MARIADB}
+  fi
+}
+
+# ------------------------------------------------------------
+
+discover_one() {
+  variable="$1"
+  value=`$mysql -s -N -e "SELECT @@$variable"`
+  error_check "$?" "Discovering $variable"
+  eval "$variable='$value'"
+}
+
+# ------------------------------------------------------------
+
+set_all() {
+  start_time=`date +%Y%m%d%H%M%S`
+  : ${GETSLOW_LOG_FILE:="${slow_query_log_file}-full-${start_time}"}
+  set_one "slow_query_log_file" "'$GETSLOW_LOG_FILE'"
+  set_one "long_query_time" "$GETSLOW_LONG_QUERY_TIME"
+
+  if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
+    set_one "log_slow_verbosity" "'$GETSLOW_VERBOSITY'"
+    [ -z "$GETSLOW_LOG_FILTER" ] || set_one "log_slow_filter" "'$GETSLOW_LOG_FILTER'"
+    [ -z "$GETSLOW_RATE_LIMIT" ] || set_one "log_slow_rate_limit" "$GETSLOW_RATE_LIMIT"
+  fi
+
+  if [ $PERCONA -ne 0 ] ; then
+    [ -z "$GETSLOW_SP_STATEMENTS" ] || set_one "log_slow_sp_statements" "$GETSLOW_SP_STATEMENTS"
+    [ -z "$GETSLOW_RATE_TYPE" -o -z "$opt_log_slow_rate_type" ] || set_one "log_slow-rate_type" "'$GETSLOW_RATE_TYPE'"
+    [ -z "$GETSLOW_TIMESTAMP_ALWAYS" ] || set_one "$opt_slow_query_log_timestamp_always" "$GETSLOW_TIMESTAMP_ALWAYS"
+    [ -z "$GETSLOW_TIMESTAMP_PRECISION" ] || set_one "$opt_slow_query_log_timestamp_precision" "'$GETSLOW_TIMESTAMP_PRECISION'"
+  fi
+
+  if [ $MARIADB -ne 0 ] ; then
+    : ${MARIADB}
+  fi
+
+  set_one "slow_query_log" "0" "Disabling slow_query_log"
+  set_one "slow_query_log" "1" "Enabling slow_query_log"
+}
+
+# ------------------------------------------------------------
+
+set_one() {
+  variable="$1"
+  value="$2"
+  message="${3:-Setting $variable=$value}"
+  $mysql -e "SET GLOBAL $variable=$value"
+  error_check "$?" "$message"
+}
+
+# ------------------------------------------------------------
+
+restore_all() {
+  restore_one "slow_query_log_file" "'$slow_query_log_file'"
+  restore_one "long_query_time" "$long_query_time"
+
+  if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
+    restore_one "log_slow_verbosity" "'$log_slow_verbosity'"
+    [ -z "$GETSLOW_LOG_FILTER" ] || restore_one "log_slow_filter" "'$log_slow_filter'"
+    [ -z "$GETSLOW_RATE_LIMIT" ] || restore_one "log_slow_rate_limit" "$log_slow_rate_limit"
+  fi
+
+  if [ $PERCONA -ne 0 ] ; then
+    [ -z "$GETSLOW_SP_STATEMENTS" ] || restore_one "log_slow_sp_statements" "$log_slow_sp_statements"
+    [ -z "$GETSLOW_RATE_TYPE" ] || restore_one "log_slow_rate_type" "'$log_slow_rate_type'"
+    [ -z "$GETSLOW_TIMESTAMP_ALWAYS" ] || restore_one "slow_query_log_timestamp_always" "$slow_query_log_timestamp_always"
+    [ -z "$GETSLOW_TIMESTAMP_PRECISION" ] || restore_one "slow_query_log_timestamp_precision" "$slow_query_log_timestamp_precision"
+  fi
+
+  if [ $MARIADB -ne 0 ] ; then
+    : ${MARIADB}
+  fi
+
+  set_one "slow_query_log" "0" "Disabling slow_query_log"
+  restore_one "slow_query_log" "$slow_query_log"
+}
+
+# ------------------------------------------------------------
+
+restore_one() {
+  variable="$1"
+  value="$2"
+  set_one "$variable" "$value" "Restoring $variable=$value"
+}
+
+# ------------------------------------------------------------
 
 error_check() {
   status=$1
@@ -45,59 +233,29 @@ error_check() {
     echo "Error occurred while trying: $message" >&2
     exit 1
   else
-    if [ $VERBOSE -ne 0 ] ; then
-      echo "$message"
-    fi
+    [ $GETSLOW_VERBOSE -ne 0 ] && echo "$message"
   fi
 }
 
-restore_slow_log() {
-  $mysql -e "SET GLOBAL slow_query_log_file='$slow_log'"
-  error_check "$?" "Restoring slow_query_log_file=$slow_log"
+# ------------------------------------------------------------
 
-  $mysql -e "SET GLOBAL long_query_time=$long_query_time" 
-  error_check "$?" "Restoring long_query_time=$long_query_time"
+parse_options "$@"
 
-  $mysql -e "SET GLOBAL slow_query_log=$slow_logging" 
-  error_check "$?" "Restoring slow_query_log=$slow_logging"
+version_check
 
-  $mysqladmin flush-logs 
-  error_check "$?" "Flushing logs during restore"
-}
+discover_all
 
-start_time=`date +%Y%m%d%H%M%S`
+trap restore_all INT TERM EXIT
 
-slow_logging=`$mysql -s -N -e "SELECT @@slow_query_log"` 
-error_check "$?" "Discovering slow_query_log=$slow_logging"
+set_all
 
-slow_log=`$mysql -s -N -e "SELECT @@slow_query_log_file"` 
-error_check "$?" "Discovering slow_query_log_file=$slow_log"
+[ $GETSLOW_VERBOSE -ne 0 ] && echo -n "Sleeping $GETSLOW_SECONDS seconds... "
+sleep $GETSLOW_SECONDS
+[ $GETSLOW_VERBOSE -ne 0 ] && echo "done."
 
-long_query_time=`$mysql -s -N -e "SELECT @@long_query_time"` 
-error_check "$?"  "Discovering long_query_time=$long_query_time"
-
-trap restore_slow_log INT TERM EXIT
-
-$mysql -e "SET GLOBAL long_query_time=0" 
-error_check "$?" "Setting long_query_time=0"
-
-slow_log_full="${slow_log}-full-${start_time}"
-$mysql -e "SET GLOBAL slow_query_log_file='$slow_log_full'"
-error_check "$?" "Setting slow_query_log_file=$slow_log_full"
-
-$mysql -e "SET GLOBAL slow_query_log=1" 
-error_check "$?" "Setting slow_query_log=1"
-
-$mysqladmin flush-logs 
-error_check "$?" "Flushing slow query log"
-
-if [ $VERBOSE -ne 0 ] ; then
-  echo -n "Sleeping $GETSLOW_COLLECT_SECONDS seconds... "
-fi
-sleep ${GETSLOW_COLLECT_SECONDS:-"0"}
-
-if [ $VERBOSE -ne 0 ] ; then echo "done." ; fi
-
-# Let the trap restore the slow log on EXIT.
+# Let the trap restore all the settings on EXIT.
 
 exit 0
+
+# ------------------------------------------------------------
+
