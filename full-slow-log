@@ -23,13 +23,13 @@
 # ------------------------------------------------------------
 
 : ${GETSLOW_CONFIG_FILE:="$HOME/.my.cnf"}
-: ${GETSLOW_SECONDS:="5"}
+: ${GETSLOW_SLEEP_TIME:="5"}
 : ${GETSLOW_LOG_FILE:=""}
 : ${GETSLOW_LONG_QUERY_TIME:="0"}
 : ${GETSLOW_VERBOSE:="0"}
 
 parse_options() {
-  options=$(getopt -n "$0" -o c:f:l:s:v -l "config: file: long-query-time: sleep-time: verbose" -- "$@")
+  options=$(getopt -n "$0" -o c:f:l:s:v -l "config-file: file: long-query-time: sleep-time: verbose" -- "$@")
   if [ $? -ne 0 ] ; then
     echo "$0: unrecognized options." 2>&1
     exit 1
@@ -38,10 +38,10 @@ parse_options() {
   while [ $# -gt 0 ]
   do
     case $1 in
-    -c|--config) GETSLOW_CONFIG_FILE="$2" ; shift ;;
+    -c|--config-file) GETSLOW_CONFIG_FILE="$2" ; shift ;;
     -f|--file) GETSLOW_LOG_FILE="$2" ; shift ;;
     -l|--long-query-time) GETSLOW_LONG_QUERY_TIME="$2" ; shift ;;
-    -s|--sleep-time) GETSLOW_SECONDS="$2" ;;
+    -s|--sleep-time) GETSLOW_SLEEP_TIME="$2" ;;
     -v|--verbose) GETSLOW_VERBOSE=1 ;;
     (--) shift ; break ;;
     (-*) echo "$0: error - unrecognized option $1" 1>&2 ; exit 1 ;;
@@ -91,8 +91,8 @@ version_check() {
   if [ $PERCONA -ne 0 ] ; then
     [ $GETSLOW_VERBOSE -ne 0 ] && echo "Detected Percona Server"
 
-    : ${GETSLOW_SP_STATEMENTS:=""}
     : ${GETSLOW_RATE_TYPE:=""}
+    : ${GETSLOW_SP_STATEMENTS:=""}
     : ${GETSLOW_TIMESTAMP_ALWAYS:=""}
     : ${GETSLOW_TIMESTAMP_PRECISION:=""}
 
@@ -130,8 +130,8 @@ discover_all() {
   fi
 
   if [ $PERCONA -ne 0 ] ; then
-    [ -z "$GETSLOW_SP_STATEMENTS" ] || discover_one "log_slow_sp_statements"
     [ -z "$GETSLOW_RATE_TYPE" -o -z "$opt_log_slow_rate_type" ] || discover_one "$opt_log_slow_rate_type"
+    [ -z "$GETSLOW_SP_STATEMENTS" ] || discover_one "log_slow_sp_statements"
     [ -z "$GETSLOW_TIMESTAMP_ALWAYS" ] || discover_one "$opt_slow_query_log_timestamp_always"
     [ -z "$GETSLOW_TIMESTAMP_PRECISION" ] || discover_one "$opt_slow_query_log_timestamp_precision"
   fi
@@ -165,8 +165,8 @@ set_all() {
   fi
 
   if [ $PERCONA -ne 0 ] ; then
-    [ -z "$GETSLOW_SP_STATEMENTS" ] || set_one "log_slow_sp_statements" "$GETSLOW_SP_STATEMENTS"
     [ -z "$GETSLOW_RATE_TYPE" -o -z "$opt_log_slow_rate_type" ] || set_one "log_slow-rate_type" "'$GETSLOW_RATE_TYPE'"
+    [ -z "$GETSLOW_SP_STATEMENTS" ] || set_one "log_slow_sp_statements" "$GETSLOW_SP_STATEMENTS"
     [ -z "$GETSLOW_TIMESTAMP_ALWAYS" ] || set_one "$opt_slow_query_log_timestamp_always" "$GETSLOW_TIMESTAMP_ALWAYS"
     [ -z "$GETSLOW_TIMESTAMP_PRECISION" ] || set_one "$opt_slow_query_log_timestamp_precision" "'$GETSLOW_TIMESTAMP_PRECISION'"
   fi
@@ -202,8 +202,8 @@ restore_all() {
   fi
 
   if [ $PERCONA -ne 0 ] ; then
-    [ -z "$GETSLOW_SP_STATEMENTS" ] || restore_one "log_slow_sp_statements" "$log_slow_sp_statements"
     [ -z "$GETSLOW_RATE_TYPE" ] || restore_one "log_slow_rate_type" "'$log_slow_rate_type'"
+    [ -z "$GETSLOW_SP_STATEMENTS" ] || restore_one "log_slow_sp_statements" "$log_slow_sp_statements"
     [ -z "$GETSLOW_TIMESTAMP_ALWAYS" ] || restore_one "slow_query_log_timestamp_always" "$slow_query_log_timestamp_always"
     [ -z "$GETSLOW_TIMESTAMP_PRECISION" ] || restore_one "slow_query_log_timestamp_precision" "$slow_query_log_timestamp_precision"
   fi
@@ -249,8 +249,8 @@ trap restore_all INT TERM EXIT
 
 set_all
 
-[ $GETSLOW_VERBOSE -ne 0 ] && echo -n "Sleeping $GETSLOW_SECONDS seconds... "
-sleep $GETSLOW_SECONDS
+[ $GETSLOW_VERBOSE -ne 0 ] && echo -n "Sleeping $GETSLOW_SLEEP_TIME seconds... "
+sleep $GETSLOW_SLEEP_TIME
 [ $GETSLOW_VERBOSE -ne 0 ] && echo "done."
 
 # Let the trap restore all the settings on EXIT.
