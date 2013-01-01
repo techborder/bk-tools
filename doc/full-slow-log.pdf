@@ -1,0 +1,794 @@
+%PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document http://www.reportlab.com
+% 'BasicFonts': class PDFDictionary 
+1 0 obj
+% The standard fonts dictionary
+<< /F1 2 0 R
+ /F2 3 0 R
+ /F3 4 0 R
+ /F4 5 0 R
+ /F5 6 0 R
+ /F6 7 0 R >>
+endobj
+% 'F1': class PDFType1Font 
+2 0 obj
+% Font Helvetica
+<< /BaseFont /Helvetica
+ /Encoding /WinAnsiEncoding
+ /Name /F1
+ /Subtype /Type1
+ /Type /Font >>
+endobj
+% 'F2': class PDFType1Font 
+3 0 obj
+% Font Helvetica-Bold
+<< /BaseFont /Helvetica-Bold
+ /Encoding /WinAnsiEncoding
+ /Name /F2
+ /Subtype /Type1
+ /Type /Font >>
+endobj
+% 'F3': class PDFType1Font 
+4 0 obj
+% Font Courier
+<< /BaseFont /Courier
+ /Encoding /WinAnsiEncoding
+ /Name /F3
+ /Subtype /Type1
+ /Type /Font >>
+endobj
+% 'F4': class PDFType1Font 
+5 0 obj
+% Font Helvetica-BoldOblique
+<< /BaseFont /Helvetica-BoldOblique
+ /Encoding /WinAnsiEncoding
+ /Name /F4
+ /Subtype /Type1
+ /Type /Font >>
+endobj
+% 'F5': class PDFType1Font 
+6 0 obj
+% Font Helvetica-Oblique
+<< /BaseFont /Helvetica-Oblique
+ /Encoding /WinAnsiEncoding
+ /Name /F5
+ /Subtype /Type1
+ /Type /Font >>
+endobj
+% 'F6': class PDFType1Font 
+7 0 obj
+% Font Courier-Bold
+<< /BaseFont /Courier-Bold
+ /Encoding /WinAnsiEncoding
+ /Name /F6
+ /Subtype /Type1
+ /Type /Font >>
+endobj
+% 'Page1': class PDFPage 
+8 0 obj
+% Page dictionary
+<< /Contents 20 0 R
+ /MediaBox [ 0
+ 0
+ 595.2756
+ 841.8898 ]
+ /Parent 19 0 R
+ /Resources << /Font 1 0 R
+ /ProcSet [ /PDF
+ /Text
+ /ImageB
+ /ImageC
+ /ImageI ] >>
+ /Rotate 0
+ /Trans <<  >>
+ /Type /Page >>
+endobj
+% 'Page2': class PDFPage 
+9 0 obj
+% Page dictionary
+<< /Contents 21 0 R
+ /MediaBox [ 0
+ 0
+ 595.2756
+ 841.8898 ]
+ /Parent 19 0 R
+ /Resources << /Font 1 0 R
+ /ProcSet [ /PDF
+ /Text
+ /ImageB
+ /ImageC
+ /ImageI ] >>
+ /Rotate 0
+ /Trans <<  >>
+ /Type /Page >>
+endobj
+% 'R10': class PDFCatalog 
+10 0 obj
+% Document Root
+<< /Outlines 12 0 R
+ /PageLabels 22 0 R
+ /PageMode /UseNone
+ /Pages 19 0 R
+ /Type /Catalog >>
+endobj
+% 'R11': class PDFInfo 
+11 0 obj
+<< /Author ()
+ /CreationDate (D:20130101151341+08'00')
+ /Creator (\(unspecified\))
+ /Keywords ()
+ /Producer (ReportLab PDF Library - www.reportlab.com)
+ /Subject (\(unspecified\))
+ /Title () >>
+endobj
+% 'R12': class PDFOutlines 
+12 0 obj
+<< /Count 6
+ /First 13 0 R
+ /Last 18 0 R
+ /Type /Outlines >>
+endobj
+% 'Outline.0': class OutlineEntryObject 
+13 0 obj
+<< /Dest [ 8 0 R
+ /XYZ
+ 62.69291
+ 765.0236
+ 0 ]
+ /Next 14 0 R
+ /Parent 12 0 R
+ /Title (FULL-SLOW-LOG) >>
+endobj
+% 'Outline.1': class OutlineEntryObject 
+14 0 obj
+<< /Dest [ 8 0 R
+ /XYZ
+ 62.69291
+ 696.0236
+ 0 ]
+ /Next 15 0 R
+ /Parent 12 0 R
+ /Prev 13 0 R
+ /Title (Usage) >>
+endobj
+% 'Outline.2': class OutlineEntryObject 
+15 0 obj
+<< /Dest [ 8 0 R
+ /XYZ
+ 62.69291
+ 629.8236
+ 0 ]
+ /Next 16 0 R
+ /Parent 12 0 R
+ /Prev 14 0 R
+ /Title (Command Options) >>
+endobj
+% 'Outline.3': class OutlineEntryObject 
+16 0 obj
+<< /Dest [ 8 0 R
+ /XYZ
+ 62.69291
+ 367.8236
+ 0 ]
+ /Next 17 0 R
+ /Parent 12 0 R
+ /Prev 15 0 R
+ /Title (Basic Log Control) >>
+endobj
+% 'Outline.4': class OutlineEntryObject 
+17 0 obj
+<< /Dest [ 9 0 R
+ /XYZ
+ 62.69291
+ 765.0236
+ 0 ]
+ /Next 18 0 R
+ /Parent 12 0 R
+ /Prev 16 0 R
+ /Title (Enhanced Log Control) >>
+endobj
+% 'Outline.5': class OutlineEntryObject 
+18 0 obj
+<< /Dest [ 9 0 R
+ /XYZ
+ 62.69291
+ 268.0236
+ 0 ]
+ /Parent 12 0 R
+ /Prev 17 0 R
+ /Title (Affecting Long-Running Sessions) >>
+endobj
+% 'R19': class PDFPages 
+19 0 obj
+% page tree
+<< /Count 2
+ /Kids [ 8 0 R
+ 9 0 R ]
+ /Type /Pages >>
+endobj
+% 'R20': class PDFStream 
+20 0 obj
+% page stream
+<< /Length 6806 >>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 62.69291 744.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (FULL-SLOW-LOG) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 726.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (Collect MySQL queries in a distinct slow-query log file, for a specific period of time.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 708.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (This tool supports enhanced log features in Percona Server 5.1 and MariaDB 5.1.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 675.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Usage) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 641.8236 cm
+q
+q
+1 0 0 1 0 0 cm
+q
+1 0 0 1 6.6 6.6 cm
+q
+.662745 .662745 .662745 RG
+.5 w
+.960784 .960784 .862745 rg
+n -6 -6 468.6898 24 re B*
+Q
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F3 10 Tf .098039 .090196 .486275 rg ($ ) Tj 0 0 0 rg (full-slow-log ) Tj .4 .4 .4 rg ([) Tj 0 0 0 rg ( -v ) Tj .4 .4 .4 rg (]) Tj 0 0 0 rg ( ) Tj .4 .4 .4 rg ([) Tj 0 0 0 rg ( -s seconds ) Tj .4 .4 .4 rg (]) Tj 0 0 0 rg ( ) Tj .4 .4 .4 rg ([) Tj 0 0 0 rg ( -f file ) Tj .4 .4 .4 rg (]) Tj 0 0 0 rg ( ) Tj .4 .4 .4 rg ([) Tj 0 0 0 rg ( -c config ) Tj .4 .4 .4 rg (]) Tj 0 0 0 rg ( ) Tj .4 .4 .4 rg ([) Tj 0 0 0 rg ( -l ) Tj 0 .501961 0 rg (time) Tj 0 0 0 rg ( ) Tj .4 .4 .4 rg (]) Tj T* ET
+Q
+Q
+Q
+Q
+Q
+q
+1 0 0 1 62.69291 608.8236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Command Options) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 590.8236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F2 10 Tf 12 TL (-v | --verbose) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 575.8236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 2 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (Enable verbose output.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 559.8236 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F2 10 Tf 0 0 0 rg (-s | --sleep-time ) Tj /F4 10 Tf (seconds) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 520.8236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 26 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 26 Tm /F1 10 Tf 12 TL .947882 Tw (Specify the number of seconds to sleep while logs are being written to the log file. The default is 5) Tj T* 0 Tw .890514 Tw (seconds, which is probably too short for most sites, but the value is chosen to be as low impact as) Tj T* 0 Tw (possible if you forget to give another value.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 504.8236 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F2 10 Tf 0 0 0 rg (-f | --file ) Tj /F4 10 Tf (file) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 465.8236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 26 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 26 Tm 2.93186 Tw 12 TL /F1 10 Tf 0 0 0 rg (Specify a slow-quey log destination. The default is to create a new file based on the current) Tj T* 0 Tw .396412 Tw (slow-query log file's name and destination, appending to the name a suffix with datetime information:) Tj T* 0 Tw ("-full-) Tj /F5 10 Tf (YYYYMMDDHHMMSS) Tj /F1 10 Tf (".) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 449.8236 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F2 10 Tf 0 0 0 rg (-c | --config-file ) Tj /F4 10 Tf (file) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 422.8236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 14 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 14 Tm .13881 Tw 12 TL /F1 10 Tf 0 0 0 rg (Specify a MySQL config file. You can store host, user, and password in the ) Tj /F3 10 Tf ([client] ) Tj /F1 10 Tf (section of the) Tj T* 0 Tw (config file. The default is ) Tj /F3 10 Tf ($HOME/.my.cnf) Tj /F1 10 Tf (, like other mysql client programs.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 406.8236 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F2 10 Tf 0 0 0 rg (-l | --long-query-time ) Tj /F4 10 Tf (seconds) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 379.8236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 14 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 14 Tm 2.757318 Tw 12 TL /F1 10 Tf 0 0 0 rg (Specify the threshold for logging queries to the slow-query log. The default is full logging, i.e.) Tj T* 0 Tw /F3 10 Tf (long-query-time=0) Tj /F1 10 Tf (.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 346.8236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Basic Log Control) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 316.8236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL 4.741412 Tw (This tool also uses environment variables as an alternative way to control the tool behavior.) Tj T* 0 Tw (Command-line options take priority over environment variables.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 286.8236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL .918735 Tw (For example, the following commands would make the script collect query logs for 300 seconds and 60) Tj T* 0 Tw (seconds, respectively.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 229.6236 cm
+q
+q
+1 0 0 1 0 0 cm
+q
+1 0 0 1 6.6 6.6 cm
+q
+.662745 .662745 .662745 RG
+.5 w
+.960784 .960784 .862745 rg
+n -6 -6 468.6898 48 re B*
+Q
+q
+BT 1 0 0 1 0 26 Tm 12 TL /F3 10 Tf .098039 .090196 .486275 rg ($ ) Tj 0 .501961 0 rg (export ) Tj .098039 .090196 .486275 rg (GETSLOW_SLEEP_TIME) Tj .4 .4 .4 rg (=) Tj 0 0 0 rg (300) Tj T* .098039 .090196 .486275 rg ($ ) Tj 0 0 0 rg (full-slow-log) Tj T* .098039 .090196 .486275 rg ($ ) Tj 0 0 0 rg (full-slow-log -s 60) Tj T* ET
+Q
+Q
+Q
+Q
+Q
+q
+1 0 0 1 62.69291 209.6236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F6 10 Tf 12 TL (GETSLOW_SLEEP_TIME) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 194.6236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 2 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 0 rg (Works like the ) Tj /F3 10 Tf (--sleep-time ) Tj /F1 10 Tf (command-line option.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 178.6236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F6 10 Tf 12 TL (GETSLOW_LOG_FILE) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 163.6236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 2 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 0 rg (Works like the ) Tj /F3 10 Tf (--file ) Tj /F1 10 Tf (command-line option.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 147.6236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F6 10 Tf 12 TL (GETSLOW_CONFIG_FILE) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 132.6236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 2 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 0 rg (Works like the ) Tj /F3 10 Tf (--config-file ) Tj /F1 10 Tf (command-line option.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 116.6236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F6 10 Tf 12 TL (GETSLOW_LONG_QUERY_TIME) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 101.6236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 2 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 0 rg (Works like the ) Tj /F3 10 Tf (--long-query-time ) Tj /F1 10 Tf (command-line option.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+ 
+endstream
+endobj
+% 'R21': class PDFStream 
+21 0 obj
+% page stream
+<< /Length 7244 >>
+stream
+1 0 0 1 0 0 cm  BT /F1 12 Tf 14.4 TL ET
+q
+1 0 0 1 62.69291 744.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Enhanced Log Control) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 714.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL .61284 Tw (Percona Server and MariaDB support additional configuration for the slow-query log file. You can control) Tj T* 0 Tw (these features with environment variables:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 696.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (The following environment variables apply logging changes to both Percona Server and MariaDB:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 680.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F6 10 Tf 12 TL (GETSLOW_VERBOSITY) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 629.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 38 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 38 Tm .011984 Tw 12 TL /F1 10 Tf 0 0 0 rg (Add more detail to the slow-query log. The value is a comma-separated list of keywords: ) Tj /F3 10 Tf (microtime) Tj /F1 10 Tf (,) Tj T* 0 Tw 2.064418 Tw /F3 10 Tf (query_plan) Tj /F1 10 Tf (, ) Tj /F3 10 Tf (innodb) Tj /F1 10 Tf (, ) Tj /F3 10 Tf (profiling) Tj /F1 10 Tf (, ) Tj /F3 10 Tf (profiling_getrusage) Tj /F1 10 Tf (. The default includes the first four) Tj T* 0 Tw .143976 Tw (keywords. The ) Tj /F3 10 Tf (profiling ) Tj /F1 10 Tf (and ) Tj /F3 10 Tf (profiling_getrusage ) Tj /F1 10 Tf (keywords are supported only by Percona) Tj T* 0 Tw (Server 5.5) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 613.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F6 10 Tf 12 TL (GETSLOW_LOG_FILTER) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 574.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 26 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 26 Tm .164651 Tw 12 TL /F1 10 Tf 0 0 0 rg (Log only queries that invoke specific data access behavior. The value is a comma-separated string of) Tj T* 0 Tw 2.919961 Tw (keywords: ) Tj /F3 10 Tf (qc_miss) Tj /F1 10 Tf (, ) Tj /F3 10 Tf (full_scan) Tj /F1 10 Tf (, ) Tj /F3 10 Tf (full_join) Tj /F1 10 Tf (, ) Tj /F3 10 Tf (tmp_table) Tj /F1 10 Tf (, ) Tj /F3 10 Tf (tmp_table_on_disk) Tj /F1 10 Tf (, ) Tj /F3 10 Tf (filesort) Tj /F1 10 Tf (,) Tj T* 0 Tw /F3 10 Tf (filesort_on_disk) Tj /F1 10 Tf (. The default is no change to the configured log filter.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 558.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F6 10 Tf 12 TL (GETSLOW_RATE_LIMIT) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 531.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 14 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 14 Tm 1.679431 Tw 12 TL /F1 10 Tf 0 0 0 rg (Specify an integer ) Tj /F5 10 Tf (N) Tj /F1 10 Tf (. One out of ) Tj /F5 10 Tf (N ) Tj /F1 10 Tf (sessions or queries are logged, the rest are not logged. The) Tj T* 0 Tw (default is no change to the configured log rate limit.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 513.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (The following environment variables apply logging changes only to Percona Server:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 497.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F6 10 Tf 12 TL (GETSLOW_RATE_TYPE) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 470.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 14 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 14 Tm 1.416457 Tw 12 TL /F1 10 Tf 0 0 0 rg (Specify ) Tj /F3 10 Tf (session ) Tj /F1 10 Tf (or ) Tj /F3 10 Tf (query ) Tj /F1 10 Tf (to rate-limit the log entries by query or by session The default is no) Tj T* 0 Tw (change to the configured log rate type. This is supported in Percona Server 5.5 only.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 454.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F6 10 Tf 12 TL (GETSLOW_SP_STATEMENTS) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 439.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 2 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (Set to 1 to log statements run from stored routines.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 423.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F6 10 Tf 12 TL (GETSLOW_TIMESTAMP_ALWAYS) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 384.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 26 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 26 Tm /F1 10 Tf 12 TL .939431 Tw (Set to 1 to make every slow-query log record include a timestamp. The default is no change to the) Tj T* 0 Tw .173735 Tw (configured log format. Note this variable's name is different in Percona Server 5.1 versus 5.5, but you) Tj T* 0 Tw (can use the environment variable as named here, and the tool will adjust for 5.1.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 368.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F6 10 Tf 12 TL (GETSLOW_TIMESTAMP_PRECISION) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 353.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 2 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+BT 1 0 0 1 0 2 Tm 12 TL /F1 10 Tf 0 0 0 rg (Set to ) Tj /F3 10 Tf (second ) Tj /F1 10 Tf (or ) Tj /F3 10 Tf (microsecond) Tj /F1 10 Tf (. The default is no change to the configured log format.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 335.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F1 10 Tf 12 TL (The following enhanced log control features are not supported by this tool:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 319.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 2 Tm /F2 10 Tf 12 TL (Log slave statements) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 280.0236 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+BT 1 0 0 1 0 26 Tm  T* ET
+q
+1 0 0 1 20 0 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 26 Tm /F1 10 Tf 12 TL 1.72284 Tw (Enabling or disabling this feature requires stopping and starting the slave threads. It could cause) Tj T* 0 Tw .012209 Tw (interruptions on the slave if this tool were to stop the slave threads. You can always enable this option) Tj T* 0 Tw (on Percona Server manually, but not using this tool.) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 62.69291 247.0236 cm
+q
+BT 1 0 0 1 0 3.5 Tm 21 TL /F2 17.5 Tf 0 0 0 rg (Affecting Long-Running Sessions) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 193.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 38 Tm /F1 10 Tf 12 TL 1.60152 Tw (Changing global values dynamically does not affect current MySQL sessions. Only new sessions new) Tj T* 0 Tw 3.643318 Tw (sessions that start after the global value has been changed heed the change. This means that) Tj T* 0 Tw 2.244147 Tw (applications with long-running sessions, or connection pools, etc. might miss the temporary changes) Tj T* 0 Tw (made by this tool.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 151.0236 cm
+q
+BT 1 0 0 1 0 26 Tm 2.51497 Tw 12 TL /F1 10 Tf 0 0 0 rg (Percona Server has a configuration variable ) Tj /F3 10 Tf (slow_query_log_use_global_control) Tj /F1 10 Tf (. This forces) Tj T* 0 Tw 1.485697 Tw (running threads to heed global changes dynamically. However, changing this variable is itself a global) Tj T* 0 Tw (change, which the running threads won't heed by default.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 62.69291 121.0236 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 14 Tm /F1 10 Tf 12 TL .534985 Tw (You can change this variable manually, but not using this tool. Then restart any long-running sessions or) Tj T* 0 Tw (connection pools, and subsequently they should heed dynamic changes to global variables.) Tj T* ET
+Q
+Q
+ 
+endstream
+endobj
+% 'R22': class PDFPageLabels 
+22 0 obj
+% Document Root
+<< /Nums [ 0
+ 23 0 R
+ 1
+ 24 0 R ] >>
+endobj
+% 'R23': class PDFPageLabel 
+23 0 obj
+% None
+<< /S /D
+ /St 1 >>
+endobj
+% 'R24': class PDFPageLabel 
+24 0 obj
+% None
+<< /S /D
+ /St 2 >>
+endobj
+xref
+0 25
+0000000000 65535 f
+0000000113 00000 n
+0000000269 00000 n
+0000000434 00000 n
+0000000609 00000 n
+0000000770 00000 n
+0000000959 00000 n
+0000001140 00000 n
+0000001309 00000 n
+0000001588 00000 n
+0000001868 00000 n
+0000002027 00000 n
+0000002275 00000 n
+0000002400 00000 n
+0000002573 00000 n
+0000002753 00000 n
+0000002943 00000 n
+0000003135 00000 n
+0000003330 00000 n
+0000003505 00000 n
+0000003620 00000 n
+0000010525 00000 n
+0000017872 00000 n
+0000017978 00000 n
+0000018055 00000 n
+trailer
+<< /ID 
+ % ReportLab generated PDF document -- digest (http://www.reportlab.com) 
+ [(Z\363;\000"\330ZEr#\201\025=\266\324|) (Z\363;\000"\330ZEr#\201\025=\266\324|)] 
+
+ /Info 11 0 R
+ /Root 10 0 R
+ /Size 25 >>
+startxref
+18102
+%%EOF
