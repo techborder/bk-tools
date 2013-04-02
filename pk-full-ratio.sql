@@ -38,34 +38,39 @@ drop table if exists bi;
 drop table if exists ubi;
 
 create table ti (id tinyint auto_increment primary key) auto_increment=100;
+insert into ti () values ();
 create table uti (id tinyint unsigned auto_increment primary key) auto_increment=100;
+insert into uti () values ();
 create table si (id smallint auto_increment primary key) auto_increment=10000;
+insert into si () values ();
 create table usi (id smallint unsigned auto_increment primary key) auto_increment=10000;
+insert into usi () values ();
 create table mi (id mediumint auto_increment primary key) auto_increment=1000000;
+insert into mi () values ();
 create table umi (id mediumint unsigned auto_increment primary key) auto_increment=1000000;
+insert into umi () values ();
 create table i (id int auto_increment primary key) auto_increment=1000000000;
+insert into i () values ();
 create table ui (id int unsigned auto_increment primary key) auto_increment=1000000000;
+insert into ui () values ();
 create table bi (id bigint auto_increment primary key) auto_increment=10000000000000000;
+insert into bi () values ();
 create table ubi (id bigint unsigned auto_increment primary key) auto_increment=10000000000000000;
+insert into ubi () values ();
 */
 
-select table_name, auto_increment, round(auto_increment*100/max_auto_increment, 2) as pk_full_pct
-from (select table_name, column_name, column_type, auto_increment,
-case 
-when column_type like 'tinyint% unsigned' then pow(2,8)-1
-when column_type like 'tinyint%' then pow(2,7)-1
-when column_type like 'smallint% unsigned' then pow(2,16)-1
-when column_type like 'smallint%' then pow(2,15)-1
-when column_type like 'mediumint% unsigned' then pow(2,24)-1
-when column_type like 'mediumint%' then pow(2,23)-1
-when column_type like 'int% unsigned' then pow(2,32)-1
-when column_type like 'int%' then pow(2,31)-1
-when column_type like 'bigint% unsigned' then pow(2,64)-1
-when column_type like 'bigint%' then pow(2,63)-1
-else null
-end as max_auto_increment
-from information_schema.tables t
-join information_schema.columns c using (table_schema,table_name)
-join information_schema.key_column_usage k using (table_schema,table_name,column_name)
-where t.table_schema = 'test' and k.constraint_name = 'PRIMARY' and auto_increment is not null) dt
-order by pk_full_pct desc limit 10;
+select concat('`', table_schema, '`.`', table_name, '`.`', column_name, '`') as `column`,
+  auto_increment as `max_int`, round(auto_increment*100/max_int, 2) as `pct_max`
+from (select table_schema, table_name, column_name, auto_increment,
+  pow(2, case data_type
+    when 'tinyint'   then 7
+    when 'smallint'  then 15
+    when 'mediumint' then 23
+    when 'int'       then 31
+    when 'bigint'    then 63
+    end+(column_type like '% unsigned'))-1 as max_int
+  from information_schema.tables t
+  join information_schema.columns c using (table_schema,table_name)
+  join information_schema.key_column_usage k using (table_schema,table_name,column_name)
+  where t.table_schema in ('test') and k.constraint_name = 'PRIMARY' and t.auto_increment is not null
+) as dt;
