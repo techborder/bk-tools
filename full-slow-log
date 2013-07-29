@@ -29,12 +29,12 @@
 : ${GETSLOW_VERBOSE:="0"}
 
 parse_options() {
-  options=$(getopt -n "$0" -o c:f:l:s:v -l "config-file: file: long-query-time: sleep-time: verbose" -- "$@")
+  options=`getopt c:f:l:s:v $*`
   if [ $? -ne 0 ] ; then
     echo "$0: unrecognized options." 2>&1
     exit 1
   fi
-  eval set -- "$options"
+  eval set -- $options
   while [ $# -gt 0 ]
   do
     case $1 in
@@ -50,8 +50,12 @@ parse_options() {
     shift
   done
 
-  mysql="mysql --defaults-file=$GETSLOW_CONFIG_FILE"
-  mysqladmin="mysqladmin --defaults-file=$GETSLOW_CONFIG_FILE"
+  mysql=`which mysql`
+  mysqladmin=`which mysqladmin`
+  if [ -e $GETSLOW_CONFIG_FILE ] ; then
+    mysql="$mysql --defaults-extra-file=$GETSLOW_CONFIG_FILE"
+    mysqladmin="$mysqladmin --defaults-extra-file=$GETSLOW_CONFIG_FILE"
+  fi
 }
 
 # ------------------------------------------------------------
@@ -63,10 +67,12 @@ version_check() {
     exit 1
   fi
 
-  version=`echo "$version_full" | sed -rne 's/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/p'`
-  version_major=`echo "$version" | sed -rne 's/^([0-9]+)\.[0-9]+\.[0-9]+/\1/p'`
-  version_minor=`echo "$version" | sed -rne 's/^[0-9]+\.([0-9]+)\.[0-9]+/\1/p'`
-  version_point=`echo "$version" | sed -rne 's/^[0-9]+\.[0-9]+\.([0-9]+)/\1/p'`
+  eval `echo "$version_full" | perl -wne '
+    my @v = split(/[.-]/);
+    print "version_major=",$v[0],"\n";
+    print "version_minor=",$v[1],"\n";
+    print "version_point=",$v[2],"\n";
+    print "version=",join(".",@v[0..2]),"\n";'`
 
   [ $GETSLOW_VERBOSE -ne 0 ] && echo "Detected version=$version"
 
@@ -79,18 +85,11 @@ version_check() {
   PERCONA=`echo "$version_comment" | grep -ci "percona"`
   MARIADB=`echo "$version_comment" | grep -ci "mariadb"`
 
-  if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
-    if [ $version_major -eq 5 -a $version_minor -eq 5 ] ; then
-      : ${GETSLOW_VERBOSITY:="microtime,query_plan,innodb,profiling"}
-    fi
-    : ${GETSLOW_VERBOSITY:="microtime,query_plan,innodb"}
-    : ${GETSLOW_LOG_FILTER:=""}
-    : ${GETSLOW_RATE_LIMIT:=""}
-  fi
-
   if [ $PERCONA -ne 0 ] ; then
     [ $GETSLOW_VERBOSE -ne 0 ] && echo "Detected Percona Server"
 
+    : ${GETSLOW_LOG_FILTER:=""}
+    : ${GETSLOW_RATE_LIMIT:=""}
     : ${GETSLOW_RATE_TYPE:=""}
     : ${GETSLOW_SP_STATEMENTS:=""}
     : ${GETSLOW_TIMESTAMP_ALWAYS:=""}
@@ -106,13 +105,16 @@ version_check() {
 
     if [ $version_major -eq 5 -a $version_minor -lt 5 ] ; then
       opt_log_slow_rate_type=""
+      : ${GETSLOW_VERBOSITY:="microtime,query_plan,innodb"}
     else
       opt_log_slow_rate_type="log_slow_rate_type"
+      : ${GETSLOW_VERBOSITY:="microtime,query_plan,innodb,profiling"}
     fi
   fi
 
   if [ $MARIADB -ne 0 ] ; then
     [ $GETSLOW_VERBOSE -ne 0 ] && echo "Detected MariaDB"
+    : ${GETSLOW_VERBOSITY:="query_plan,innodb"}
   fi
 }
 
@@ -124,7 +126,7 @@ discover_all() {
   discover_one "long_query_time"
 
   if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
-    discover_one "log_slow_verbosity"
+    [ -z "$GETSLOW_VERBOSITY" ] || discover_one "log_slow_verbosity"
     [ -z "$GETSLOW_LOG_FILTER" ] || discover_one "log_slow_filter"
     [ -z "$GETSLOW_RATE_LIMIT" ] || discover_one "log_slow_rate_limit"
   fi
@@ -159,7 +161,7 @@ set_all() {
   set_one "long_query_time" "$GETSLOW_LONG_QUERY_TIME"
 
   if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
-    set_one "log_slow_verbosity" "'$GETSLOW_VERBOSITY'"
+    [ -z "$GETSLOW_VERBOSITY" ] || set_one "log_slow_verbosity" "'$GETSLOW_VERBOSITY'"
     [ -z "$GETSLOW_LOG_FILTER" ] || set_one "log_slow_filter" "'$GETSLOW_LOG_FILTER'"
     [ -z "$GETSLOW_RATE_LIMIT" ] || set_one "log_slow_rate_limit" "$GETSLOW_RATE_LIMIT"
   fi
@@ -196,7 +198,7 @@ restore_all() {
   restore_one "long_query_time" "$long_query_time"
 
   if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
-    restore_one "log_slow_verbosity" "'$log_slow_verbosity'"
+    [ -z "$GETSLOW_VERBOSITY" ] || restore_one "log_slow_verbosity" "'$log_slow_verbosity'"
     [ -z "$GETSLOW_LOG_FILTER" ] || restore_one "log_slow_filter" "'$log_slow_filter'"
     [ -z "$GETSLOW_RATE_LIMIT" ] || restore_one "log_slow_rate_limit" "$log_slow_rate_limit"
   fi
@@ -245,7 +247,7 @@ version_check
 
 discover_all
 
-trap restore_all INT TERM EXIT
+trap restore_all EXIT INT QUIT TERM ERR
 
 set_all
 

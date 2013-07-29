@@ -15,23 +15,23 @@ Usage
 Command Options
 ========================================
 
--v | --verbose
+-v 
    Enable verbose output.
 
--s | --sleep-time *seconds*
+-s *seconds*
    Specify the number of seconds to sleep while logs are being written to the log file.
    The default is 5 seconds, which is probably too short for most sites, but the value is chosen to be as low impact as possible if you forget to give another value.
 
--f | --file *file*
+-f *file*
    Specify a slow-quey log destination.
    The default is to create a new file based on the current slow-query log file's name and destination, appending to the name a suffix with datetime information: "-full-*YYYYMMDDHHMMSS*".
 
--c | --config-file *file*
+-c *file*
    Specify a MySQL config file.
    You can store host, user, and password in the ``[client]`` section of the config file.
    The default is ``$HOME/.my.cnf``, like other mysql client programs.
 
--l | --long-query-time *seconds*
+-l *seconds*
    Specify the threshold for logging queries to the slow-query log.
    The default is full logging, i.e. ``long-query-time=0``.
 
@@ -50,16 +50,16 @@ For example, the following commands would make the script collect query logs for
    $ full-slow-log -s 60
 
 ``GETSLOW_SLEEP_TIME``
-   Works like the ``--sleep-time`` command-line option.
+   Works like the ``-s`` command-line option.
 
 ``GETSLOW_LOG_FILE``
-   Works like the ``--file`` command-line option.
+   Works like the ``-f`` command-line option.
 
 ``GETSLOW_CONFIG_FILE``
-   Works like the ``--config-file`` command-line option.
+   Works like the ``-c`` command-line option.
 
 ``GETSLOW_LONG_QUERY_TIME``
-   Works like the ``--long-query-time`` command-line option.
+   Works like the ``-l`` command-line option.
 
 Enhanced Log Control
 ========================================
