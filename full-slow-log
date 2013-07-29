@@ -38,11 +38,11 @@ parse_options() {
   while [ $# -gt 0 ]
   do
     case $1 in
-    -c|--config-file) GETSLOW_CONFIG_FILE="$2" ; shift ;;
-    -f|--file) GETSLOW_LOG_FILE="$2" ; shift ;;
-    -l|--long-query-time) GETSLOW_LONG_QUERY_TIME="$2" ; shift ;;
-    -s|--sleep-time) GETSLOW_SLEEP_TIME="$2" ;;
-    -v|--verbose) GETSLOW_VERBOSE=1 ;;
+    -c) GETSLOW_CONFIG_FILE="$2" ; shift ;;
+    -f) GETSLOW_LOG_FILE="$2" ; shift ;;
+    -l) GETSLOW_LONG_QUERY_TIME="$2" ; shift ;;
+    -s) GETSLOW_SLEEP_TIME="$2" ;;
+    -v) GETSLOW_VERBOSE=1 ;;
     (--) shift ; break ;;
     (-*) echo "$0: error - unrecognized option $1" 1>&2 ; exit 1 ;;
     (*) break ;;
