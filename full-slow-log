@@ -88,6 +88,7 @@ version_check() {
   if [ $PERCONA -ne 0 ] ; then
     [ $GETSLOW_VERBOSE -ne 0 ] && echo "Detected Percona Server"
 
+    : ${GETSLOW_GLOBAL_CONTROL:="all"}
     : ${GETSLOW_LOG_FILTER:=""}
     : ${GETSLOW_RATE_LIMIT:=""}
     : ${GETSLOW_RATE_TYPE:=""}
@@ -98,9 +99,11 @@ version_check() {
     if [ $version_major -eq 5 -a $version_minor -eq 5 -a $version_point -lt 10 ] ; then
       opt_slow_query_log_timestamp_precision="slow_query_log_microseconds_timestamp"
       opt_slow_query_log_timestamp_always="log_slow_timestamp_every"
+      opt_slow_query_log_use_global_control="use_global_log_slow_control"
     else
       opt_slow_query_log_timestamp_precision="slow_query_log_timestamp_precision"
       opt_slow_query_log_timestamp_always="slow_query_log_timestamp_always"
+      opt_slow_query_log_use_global_control="slow_query_log_use_global_control"
     fi
 
     if [ $version_major -eq 5 -a $version_minor -lt 5 ] ; then
@@ -132,6 +135,7 @@ discover_all() {
   fi
 
   if [ $PERCONA -ne 0 ] ; then
+    [ -z "$GETSLOW_GLOBAL_CONTROL" ] || discover_one "$opt_slow_query_log_use_global_control"
     [ -z "$GETSLOW_RATE_TYPE" -o -z "$opt_log_slow_rate_type" ] || discover_one "$opt_log_slow_rate_type"
     [ -z "$GETSLOW_SP_STATEMENTS" ] || discover_one "log_slow_sp_statements"
     [ -z "$GETSLOW_TIMESTAMP_ALWAYS" ] || discover_one "$opt_slow_query_log_timestamp_always"
@@ -160,17 +164,18 @@ set_all() {
   set_one "slow_query_log_file" "'$GETSLOW_LOG_FILE'"
   set_one "long_query_time" "$GETSLOW_LONG_QUERY_TIME"
 
-  if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
-    [ -z "$GETSLOW_VERBOSITY" ] || set_one "log_slow_verbosity" "'$GETSLOW_VERBOSITY'"
-    [ -z "$GETSLOW_LOG_FILTER" ] || set_one "log_slow_filter" "'$GETSLOW_LOG_FILTER'"
-    [ -z "$GETSLOW_RATE_LIMIT" ] || set_one "log_slow_rate_limit" "$GETSLOW_RATE_LIMIT"
-  fi
-
   if [ $PERCONA -ne 0 ] ; then
+    [ -z "$GETSLOW_GLOBAL_CONTROL" ] || set_one "$opt_slow_query_log_use_global_control" "'$GETSLOW_GLOBAL_CONTROL'"
     [ -z "$GETSLOW_RATE_TYPE" -o -z "$opt_log_slow_rate_type" ] || set_one "log_slow-rate_type" "'$GETSLOW_RATE_TYPE'"
     [ -z "$GETSLOW_SP_STATEMENTS" ] || set_one "log_slow_sp_statements" "$GETSLOW_SP_STATEMENTS"
     [ -z "$GETSLOW_TIMESTAMP_ALWAYS" ] || set_one "$opt_slow_query_log_timestamp_always" "$GETSLOW_TIMESTAMP_ALWAYS"
     [ -z "$GETSLOW_TIMESTAMP_PRECISION" ] || set_one "$opt_slow_query_log_timestamp_precision" "'$GETSLOW_TIMESTAMP_PRECISION'"
+  fi
+
+  if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
+    [ -z "$GETSLOW_VERBOSITY" ] || set_one "log_slow_verbosity" "'$GETSLOW_VERBOSITY'"
+    [ -z "$GETSLOW_LOG_FILTER" ] || set_one "log_slow_filter" "'$GETSLOW_LOG_FILTER'"
+    [ -z "$GETSLOW_RATE_LIMIT" ] || set_one "log_slow_rate_limit" "$GETSLOW_RATE_LIMIT"
   fi
 
   if [ $MARIADB -ne 0 ] ; then
@@ -197,17 +202,18 @@ restore_all() {
   restore_one "slow_query_log_file" "'$slow_query_log_file'"
   restore_one "long_query_time" "$long_query_time"
 
-  if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
-    [ -z "$GETSLOW_VERBOSITY" ] || restore_one "log_slow_verbosity" "'$log_slow_verbosity'"
-    [ -z "$GETSLOW_LOG_FILTER" ] || restore_one "log_slow_filter" "'$log_slow_filter'"
-    [ -z "$GETSLOW_RATE_LIMIT" ] || restore_one "log_slow_rate_limit" "$log_slow_rate_limit"
-  fi
-
   if [ $PERCONA -ne 0 ] ; then
+    [ -z "$GETSLOW_GLOBAL_CONTROL" ] || restore_one "slow_query_log_use_global_control" "'$slow_query_log_use_global_control'"
     [ -z "$GETSLOW_RATE_TYPE" ] || restore_one "log_slow_rate_type" "'$log_slow_rate_type'"
     [ -z "$GETSLOW_SP_STATEMENTS" ] || restore_one "log_slow_sp_statements" "$log_slow_sp_statements"
     [ -z "$GETSLOW_TIMESTAMP_ALWAYS" ] || restore_one "slow_query_log_timestamp_always" "$slow_query_log_timestamp_always"
     [ -z "$GETSLOW_TIMESTAMP_PRECISION" ] || restore_one "slow_query_log_timestamp_precision" "$slow_query_log_timestamp_precision"
+  fi
+
+  if [ $PERCONA -ne 0 -o $MARIADB -ne 0 ] ; then
+    [ -z "$GETSLOW_VERBOSITY" ] || restore_one "log_slow_verbosity" "'$log_slow_verbosity'"
+    [ -z "$GETSLOW_LOG_FILTER" ] || restore_one "log_slow_filter" "'$log_slow_filter'"
+    [ -z "$GETSLOW_RATE_LIMIT" ] || restore_one "log_slow_rate_limit" "$log_slow_rate_limit"
   fi
 
   if [ $MARIADB -ne 0 ] ; then
