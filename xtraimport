@@ -1,0 +1,13 @@
+:
+
+mysqldump --no-data $schema > schema-ddl.sql
+
+mysql -N -B <<'EOF' > discard-ddl.sql
+SELECT CONCAT('ALTER TABLE `', table_name, '` DISCARD TABLESPACE;') AS _ddl 
+FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='$schema' AND ENGINE='InnoDB';
+EOF
+
+mysql -N -B <<'EOF' > import-ddl.sql
+SELECT CONCAT('ALTER TABLE `', table_name, '` IMPORT TABLESPACE;') AS _ddl 
+FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='$schema' AND ENGINE='InnoDB';
+EOF
