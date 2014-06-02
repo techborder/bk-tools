@@ -24,12 +24,12 @@
 # ------------------------------------------------------------
 
 : ${GETSLOW_CONFIG_FILE:="$HOME/.my.cnf"}
+: ${GETSLOW_CONFIG_FILE_TEST:="bar.cnf"}
 : ${GETSLOW_SLEEP_TIME:="5"}
 : ${GETSLOW_LOG_FILE:=""}
 : ${GETSLOW_LONG_QUERY_TIME:="0"}
 : ${GETSLOW_DB_USER:=""}
-: ${GETSLOW_DB_PASSWORD:=""}
-# DEBUG
+: ${SLOW_DB_PASSWORD:=""} # Do not put MySQL password here unless your file is only readable by you.
 : ${GETSLOW_VERBOSE:="0"}
 
 parse_options() {
@@ -40,39 +40,13 @@ parse_options() {
   fi
   eval set -- $options
   
-#while getopts “ht:r:p:v” OPTION
-#do
-#     case $OPTION in
-#         h)
-#             usage
-#             exit 1
-#             ;;
-#         t)
-#             TEST=$OPTARG
-#             ;;
-#         r)
-#             SERVER=$OPTARG
-#             ;;
-#         p)
-#             PASSWD=$OPTARG
-#             ;;
-#         v)
-#             VERBOSE=1
-#             ;;
-#         ?)
-#             usage
-#             exit
-#             ;;
-#     esac
-#done  
-  
   while [ $# -gt 0 ]
   do
     case $1 in
     -c) GETSLOW_CONFIG_FILE="$2" ; shift ;;
     -f) GETSLOW_LOG_FILE="$2" ; shift ;;
     -l) GETSLOW_LONG_QUERY_TIME="$2" ; shift ;;
-    -s) GETSLOW_SLEEP_TIME="$2" ;;
+    -s) GETSLOW_SLEEP_TIME="$2" ; shift ;;
     -u) GETSLOW_DB_USER="$2" ; shift;;
     -v) GETSLOW_VERBOSE=1 ;;
     (--) shift ; break ;;
@@ -84,7 +58,8 @@ parse_options() {
 
   mysql=`which mysql`
   if [ x"${GETSLOW_DB_USER}" != x ] ; then
-    mysql="$mysql -u ${GETSLOW_DB_USER} -p${GETSLOW_DB_PASSWORD}"
+    read -s -p "MySQL Password: " SLOW_DB_PASSWORD
+    mysql="$mysql -u ${GETSLOW_DB_USER} -p${SLOW_DB_PASSWORD}"
   fi
   mysqladmin=`which mysqladmin`
   if [ -e $GETSLOW_CONFIG_FILE ] ; then
@@ -95,6 +70,7 @@ parse_options() {
     [ $GETSLOW_VERBOSE -ne 0 ] && echo "Config file not file: ${GETSLOW_CONFIG_FILE}"
   fi
   [ $GETSLOW_VERBOSE -ne 0 ] && echo "MySQL command is: ${mysql}"
+  [ $GETSLOW_VERBOSE -ne 0 ] && echo "GETSLOW_CONFIG_FILE: ${GETSLOW_CONFIG_FILE}"
 }
 
 # ------------------------------------------------------------
