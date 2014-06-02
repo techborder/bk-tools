@@ -1,3 +1,4 @@
+#!/bin/bash
 :
 # ------------------------------------------------------------------
 # Enable slow-query logging for all queries,
@@ -26,15 +27,45 @@
 : ${GETSLOW_SLEEP_TIME:="5"}
 : ${GETSLOW_LOG_FILE:=""}
 : ${GETSLOW_LONG_QUERY_TIME:="0"}
+: ${GETSLOW_DB_USER:=""}
+: ${GETSLOW_DB_PASSWORD:=""}
+# DEBUG
 : ${GETSLOW_VERBOSE:="0"}
 
 parse_options() {
-  options=`getopt c:f:l:s:v $*`
+  options=`getopt c:f:l:s:u:v $*`
   if [ $? -ne 0 ] ; then
     echo "$0: unrecognized options." 2>&1
     exit 1
   fi
   eval set -- $options
+  
+#while getopts “ht:r:p:v” OPTION
+#do
+#     case $OPTION in
+#         h)
+#             usage
+#             exit 1
+#             ;;
+#         t)
+#             TEST=$OPTARG
+#             ;;
+#         r)
+#             SERVER=$OPTARG
+#             ;;
+#         p)
+#             PASSWD=$OPTARG
+#             ;;
+#         v)
+#             VERBOSE=1
+#             ;;
+#         ?)
+#             usage
+#             exit
+#             ;;
+#     esac
+#done  
+  
   while [ $# -gt 0 ]
   do
     case $1 in
@@ -42,6 +73,7 @@ parse_options() {
     -f) GETSLOW_LOG_FILE="$2" ; shift ;;
     -l) GETSLOW_LONG_QUERY_TIME="$2" ; shift ;;
     -s) GETSLOW_SLEEP_TIME="$2" ;;
+    -u) GETSLOW_DB_USER="$2" ; shift;;
     -v) GETSLOW_VERBOSE=1 ;;
     (--) shift ; break ;;
     (-*) echo "$0: error - unrecognized option $1" 1>&2 ; exit 1 ;;
@@ -51,11 +83,18 @@ parse_options() {
   done
 
   mysql=`which mysql`
+  if [ x"${GETSLOW_DB_USER}" != x ] ; then
+    mysql="$mysql -u ${GETSLOW_DB_USER} -p${GETSLOW_DB_PASSWORD}"
+  fi
   mysqladmin=`which mysqladmin`
   if [ -e $GETSLOW_CONFIG_FILE ] ; then
+    [ $GETSLOW_VERBOSE -ne 0 ] && echo "Config file file: ${GETSLOW_CONFIG_FILE}"
     mysql="$mysql --defaults-extra-file=$GETSLOW_CONFIG_FILE"
     mysqladmin="$mysqladmin --defaults-extra-file=$GETSLOW_CONFIG_FILE"
+  else
+    [ $GETSLOW_VERBOSE -ne 0 ] && echo "Config file not file: ${GETSLOW_CONFIG_FILE}"
   fi
+  [ $GETSLOW_VERBOSE -ne 0 ] && echo "MySQL command is: ${mysql}"
 }
 
 # ------------------------------------------------------------
@@ -82,6 +121,7 @@ version_check() {
   fi
 
   version_comment=`$mysql -B -N -e "SELECT @@version_comment"`
+  # Percona Server is a fork of the MySQL relational database management system created by Percona.
   PERCONA=`echo "$version_comment" | grep -ci "percona"`
   MARIADB=`echo "$version_comment" | grep -ci "mariadb"`
 
@@ -124,6 +164,7 @@ version_check() {
 # ------------------------------------------------------------
 
 discover_all() {
+
   discover_one "slow_query_log"
   discover_one "slow_query_log_file"
   discover_one "long_query_time"
@@ -192,6 +233,7 @@ set_one() {
   variable="$1"
   value="$2"
   message="${3:-Setting $variable=$value}"
+  [ $GETSLOW_VERBOSE -ne 0 ] && echo "Attempting ${message}"
   $mysql -e "SET GLOBAL $variable=$value"
   error_check "$?" "$message"
 }
