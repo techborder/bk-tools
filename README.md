@@ -1,7 +1,7 @@
 bk-tools
 ========
 
-Scripts bk wrote to help using MySQL and Percona products.
+Scripts to help use MySQL and Percona products.
 
 Cloned from billkarwin/bk-tools.
 
